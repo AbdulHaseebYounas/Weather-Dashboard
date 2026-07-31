@@ -84,15 +84,11 @@ This project was built to strengthen frontend development skills by applying rea
 
 ---
 
-# 📬 Contact
+# Author
 
-**Abdul Haseeb**
+**Abdul Haseeb Younas**
 
-💼 LinkedIn: https://linkedin.com/in/your-profile
-
-🐙 GitHub: https://github.com/yourusername
-
----
+**LinkedIn:** https://www.linkedin.com/in/abdul-haseeb-b188043b6/
 
 # ⭐ Support
 
