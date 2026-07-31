@@ -1,51 +1,104 @@
-🌤️ Weather Dashboard
+# 🌤️ Modern Weather Dashboard
 
-A modern, responsive Weather Dashboard built using HTML, CSS, and Vanilla JavaScript. The application provides real-time weather information, hourly and weekly forecasts, and an intuitive user experience powered by the Open-Meteo API.
+<div align="center">
 
-🚀 Features
-🌍 Search weather by city
-📍 Current location weather
-🌡️ Real-time temperature
-🤗 Feels Like temperature
-🌤️ Weather conditions with dynamic icons
-🕒 24-Hour Forecast
-📅 7-Day Forecast
-📊 Interactive Temperature Chart
-⭐ Favorite Cities
-🕘 Search History
-🎤 Voice Search
-🌙 Light & Dark Mode
-🎨 Dynamic weather backgrounds
-📱 Fully Responsive Design
-⚡ Loading animations
-❌ Error handling
-💾 Local Storage support
-🛠️ Technologies Used
-HTML5
-CSS3
-JavaScript (ES6)
-Fetch API
-Open-Meteo Weather API
-Open-Meteo Geocoding API
-Chart.js
-Local Storage
-Geolocation API
-📚 What I Learned
+A modern, responsive, and feature-rich Weather Dashboard built with **HTML5**, **CSS3**, and **JavaScript**, powered by the **Open-Meteo APIs**.
 
-Through this project I gained practical experience with:
+Real-time weather • Hourly & 7-Day Forecasts • Geolocation • Voice Search • Dynamic UI • Interactive Charts
 
-Working with REST APIs
-Asynchronous JavaScript (Fetch API & Async/Await)
-DOM Manipulation
-Responsive Web Design
-Local Storage
-Geolocation API
-Chart.js Integration
-Error Handling
-Modern UI Design
-Frontend Application Development
+</div>
 
-⭐ If you like this project
+---
 
-Feel free to star the repository and share your feedback. Contributions and suggestions are always welcome.
+## 📖 Overview
+
+Modern Weather Dashboard is a responsive web application that delivers accurate real-time weather information through a clean, intuitive, and interactive user interface.
+
+The application integrates the **Open-Meteo Weather** and **Geocoding APIs** to provide current weather conditions, hourly forecasts, and weekly forecasts while offering a smooth user experience across desktop, tablet, and mobile devices.
+
+This project was built to strengthen frontend development skills by applying real-world concepts such as API integration, asynchronous programming, browser APIs, responsive design, and modern UI development.
+
+---
+
+# ✨ Features
+
+### 🌍 Weather Information
+- Real-time weather updates
+- Current temperature
+- Feels like temperature
+- Weather conditions
+- Humidity
+- Wind Speed
+- Atmospheric Pressure
+- Visibility
+- UV Index
+- Cloud Cover
+- Dew Point
+- Sunrise & Sunset
+
+---
+
+### 📅 Forecasts
+
+- 24-Hour Weather Forecast
+- 7-Day Weather Forecast
+- Interactive Temperature Chart
+- Dynamic Weather Icons
+
+---
+
+### 🔍 Smart Search
+
+- Search weather by city
+- Voice Search
+- Current Location Weather
+- Search History
+- Favorite Cities
+
+---
+
+### 🎨 User Experience
+
+- Responsive Design
+- Light & Dark Mode
+- Dynamic Weather Backgrounds
+- Smooth Animations
+- Loading Screens
+- Toast Notifications
+- Error Handling
+
+---
+
+## 🛠️ Built With
+
+| Technology | Purpose |
+|------------|----------|
+| HTML5 | Structure |
+| CSS3 | Styling & Responsive Design |
+| JavaScript | Application Logic |
+| Fetch API | API Requests |
+| Open-Meteo Weather API | Weather Data |
+| Open-Meteo Geocoding API | City Search |
+| Chart.js | Temperature Charts |
+| Local Storage | Geolocation API | Current Location Weather |
+
+---
+
+# 📬 Contact
+
+**Abdul Haseeb**
+
+💼 LinkedIn: https://linkedin.com/in/your-profile
+
+🐙 GitHub: https://github.com/yourusername
+
+---
+
+# ⭐ Support
+
+If you found this project useful, consider giving it a **⭐ Star** on GitHub.
+
+It helps support my work and motivates me to build more projects.
+
+---
 
