@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WeatherPro — a premium real-time weather dashboard with forecasts, weather insights, favorites, and location-aware conditions.">
+    <meta name="theme-color" content="#0f172a">
+    <title>Weather APP</title>
+
+    <!-- Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Application stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Chart.js -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"
+        defer
+    ></script>
+</head>
+
+<body data-theme="light" data-weather-theme="default">
+    <!-- =========================================================
+         Loading Screen
+         ========================================================= -->
+    <div class="loading-screen" id="loadingScreen" aria-live="polite" aria-label="Loading WeatherPro">
+        <div class="loading-content">
+            <div class="loading-logo" aria-hidden="true">
+                <span class="logo-sun"></span>
+                <span class="logo-cloud"></span>
+            </div>
+            <div class="loading-brand">WeatherPro</div>
+            <div class="loading-spinner" aria-hidden="true"></div>
+            <p class="loading-message" id="loadingMessage">Preparing your weather experience…</p>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         App Shell
+         ========================================================= -->
+    <div class="app-shell" id="appShell">
+        <!-- =====================================================
+             Navbar
+             ===================================================== -->
+        <header class="navbar" id="navbar">
+            <div class="navbar-inner">
+                <a class="brand" href="#" aria-label="WeatherPro home" data-action="home">
+                    <span class="brand-mark" aria-hidden="true">
+                        <span class="brand-sun"></span>
+                        <span class="brand-cloud"></span>
+                    </span>
+                    <span class="brand-copy">
+                        <span class="brand-title">WeatherPro</span>
+                        <span class="brand-subtitle">Live Weather Intelligence</span>
+                    </span>
+                </a>
+
+                <nav class="navbar-actions" aria-label="Application controls">
+                    <button
+                        class="icon-button location-button"
+                        id="locationButton"
+                        type="button"
+                        title="Use my current location"
+                        aria-label="Use my current location"
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 21s7-6.2 7-12A7 7 0 1 0 5 9c0 5.8 7 12 7 12Z"></path>
+                            <circle cx="12" cy="9" r="2.4"></circle>
+                        </svg>
+                        <span class="button-label">My Location</span>
+                    </button>
+
+                    <button
+                        class="theme-toggle"
+                        id="themeToggle"
+                        type="button"
+                        title="Toggle dark mode"
+                        aria-label="Toggle dark mode"
+                        aria-pressed="false"
+                    >
+                        <span class="theme-icon theme-icon-sun" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="4"></circle>
+                                <path d="M12 2v2.2M12 19.8V22M4.93 4.93l1.56 1.56M17.51 17.51l1.56 1.56M2 12h2.2M19.8 12H22M4.93 19.07l1.56-1.56M17.51 6.49l1.56-1.56"></path>
+                            </svg>
+                        </span>
+                        <span class="theme-switch-track">
+                            <span class="theme-switch-thumb"></span>
+                        </span>
+                        <span class="theme-icon theme-icon-moon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M20.5 15.1A8.5 8.5 0 0 1 8.9 3.5 8.5 8.5 0 1 0 20.5 15.1Z"></path>
+                            </svg>
+                        </span>
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- =====================================================
+             Main Content
+             ===================================================== -->
+        <main class="main-content" id="mainContent">
+            <!-- =================================================
+                 Search Section
+                 ================================================= -->
+            <section class="search-section" aria-labelledby="searchHeading">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">YOUR WEATHER, REIMAGINED</p>
+                        <h1 id="searchHeading">Where would you like to go?</h1>
+                        <p class="section-description">
+                            Search any city for live conditions, detailed forecasts, and weather insights.
+                        </p>
+                    </div>
+                </div>
+
+                <form class="search-form" id="searchForm" role="search" autocomplete="off">
+                    <div class="search-input-wrap">
+                        <span class="search-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="6.5"></circle>
+                                <path d="m16 16 5 5"></path>
+                            </svg>
+                        </span>
+
+                        <label class="sr-only" for="searchInput">Search city</label>
+                        <input
+                            id="searchInput"
+                            name="city"
+                            type="search"
+                            inputmode="search"
+                            placeholder="Search city, country or region…"
+                            maxlength="100"
+                            spellcheck="false"
+                            autocomplete="off"
+                            aria-describedby="searchHint"
+                        >
+
+                        <button
+                            class="voice-button"
+                            id="voiceSearchButton"
+                            type="button"
+                            title="Search by voice"
+                            aria-label="Search by voice"
+                        >
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <rect x="8.5" y="3" width="7" height="11" rx="3.5"></rect>
+                                <path d="M5 11.5a7 7 0 0 0 14 0M12 18.5V22M8.5 22h7"></path>
+                            </svg>
+                        </button>
+
+                        <button class="search-button" id="searchButton" type="submit">
+                            <span class="button-text">Search</span>
+                            <span class="button-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M5 12h13"></path>
+                                    <path d="m13 6 6 6-6 6"></path>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                    <p class="search-hint" id="searchHint">
+                        <span class="keyboard-key">Enter</span> to search
+                   
+                    </p>
+                </form>
+
+                <div class="search-history" id="searchHistory" hidden>
+                    <div class="history-header">
+                        <div>
+                            <span class="history-label">Recent searches</span>
+                            <span class="history-count" id="historyCount">0</span>
+                        </div>
+                        <button class="text-button" id="clearHistoryButton" type="button">
+                            Clear all
+                        </button>
+                    </div>
+                    <div class="history-list" id="historyList" aria-label="Recent searches"></div>
+                </div>
+            </section>
+
+            <!-- =================================================
+                 Error Container
+                 ================================================= -->
+            <section class="error-container" id="errorContainer" hidden aria-live="assertive">
+                <div class="error-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 3 2.8 19a1.5 1.5 0 0 0 1.3 2.2h15.8a1.5 1.5 0 0 0 1.3-2.2L12 3Z"></path>
+                        <path d="M12 9v4.5M12 17.2v.1"></path>
+                    </svg>
+                </div>
+                <div class="error-content">
+                    <h2 id="errorTitle">Something went wrong</h2>
+                    <p id="errorMessage">We could not retrieve the weather right now.</p>
+                </div>
+                <button class="error-dismiss" id="errorDismissButton" type="button" aria-label="Dismiss error">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="m6 6 12 12M18 6 6 18"></path>
+                    </svg>
+                </button>
+            </section>
+
+            <!-- =================================================
+                 Dashboard
+                 ================================================= -->
+            <div class="dashboard" id="dashboard" hidden>
+                <!-- =============================================
+                     Current Weather
+                     ============================================= -->
+                <section class="current-weather-section" aria-labelledby="currentWeatherTitle">
+                    <div class="current-weather-card glass-card" id="currentWeatherCard">
+                        <div class="weather-card-background" aria-hidden="true">
+                            <div class="weather-glow weather-glow-one"></div>
+                            <div class="weather-glow weather-glow-two"></div>
+                            <div class="weather-particle weather-particle-one"></div>
+                            <div class="weather-particle weather-particle-two"></div>
+                            <div class="weather-particle weather-particle-three"></div>
+                        </div>
+
+                        <div class="current-weather-top">
+                            <div class="location-block">
+                                <div class="location-pin" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M19 10c0 5.2-7 10.8-7 10.8S5 15.2 5 10a7 7 0 1 1 14 0Z"></path>
+                                        <circle cx="12" cy="10" r="2.3"></circle>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h2 id="currentWeatherTitle" class="city-name">—</h2>
+                                    <p class="country-name" id="countryName">—</p>
+                                </div>
+                            </div>
+
+                            <div class="date-time-block">
+                                <time class="current-date" id="currentDate">—</time>
+                                <time class="current-time" id="currentTime">—</time>
+                            </div>
+                        </div>
+
+                        <div class="current-weather-main">
+                            <div class="weather-visual">
+                                <div class="weather-icon-large" id="currentWeatherIcon" aria-hidden="true">
+                                    <svg viewBox="-10 -10 140 140" class="weather-svg">
+                                        <circle cx="60" cy="60" r="28"></circle>
+                                    </svg>
+                                </div>
+                                <div class="weather-condition" id="currentCondition">—</div>
+                            </div>
+
+                            <div class="temperature-block">
+                                <div class="temperature-value">
+                                    <span id="currentTemperature">—</span><sup>°</sup>
+                                </div>
+                                <div class="temperature-meta">
+                                    Feels like <strong id="feelsLike">—</strong>°
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="current-weather-bottom">
+                            <div class="weather-summary" id="weatherSummary">
+                                <span class="summary-dot"></span>
+                                <span id="weatherSummaryText">Fetching the latest conditions…</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- =============================================
+                     Weather Stats
+                     ============================================= -->
+                <section class="stats-section" aria-labelledby="statsTitle">
+                    <div class="section-title-row">
+                        <div>
+                            <p class="eyebrow">AT A GLANCE</p>
+                            <h2 id="statsTitle">Weather Details</h2>
+                        </div>
+                        <button class="refresh-button" id="refreshButton" type="button" title="Refresh weather">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M20 11a8.1 8.1 0 0 0-14.8-3.9L3 10"></path>
+                                <path d="M3 5v5h5"></path>
+                                <path d="M4 13a8.1 8.1 0 0 0 14.8 3.9L21 14"></path>
+                                <path d="M21 19v-5h-5"></path>
+                            </svg>
+                            <span>Refresh</span>
+                        </button>
+                    </div>
+
+                    <div class="stats-grid" id="statsGrid">
+                        <article class="stat-card glass-card" data-stat="humidity">
+                            <div class="stat-icon stat-icon-humidity" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 3s6 6.2 6 11a6 6 0 1 1-12 0c0-4.8 6-11 6-11Z"></path>
+                                    <path d="M9.5 15.5a2.8 2.8 0 0 0 2.8 2.8"></path>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">Humidity</span>
+                                <strong class="stat-value" id="humidityValue">—</strong>
+                                <span class="stat-subtext" id="humiditySubtext">Relative humidity</span>
+                            </div>
+                        </article>
+
+                        <article class="stat-card glass-card" data-stat="wind">
+                            <div class="stat-icon stat-icon-wind" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M3 8h11a3 3 0 1 0-3-3"></path>
+                                    <path d="M3 12h15a3 3 0 1 1-3 3"></path>
+                                    <path d="M3 16h8"></path>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">Wind Speed</span>
+                                <strong class="stat-value" id="windValue">—</strong>
+                                <span class="stat-subtext" id="windSubtext">Current wind</span>
+                            </div>
+                        </article>
+
+                        <article class="stat-card glass-card" data-stat="pressure">
+                            <div class="stat-icon stat-icon-pressure" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M4 13a8 8 0 1 1 16 0"></path>
+                                    <path d="M12 13 16 8"></path>
+                                    <path d="M6 18h12"></path>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">Pressure</span>
+                                <strong class="stat-value" id="pressureValue">—</strong>
+                                <span class="stat-subtext" id="pressureSubtext">Sea-level pressure</span>
+                            </div>
+                        </article>
+
+                        <article class="stat-card glass-card" data-stat="visibility">
+                            <div class="stat-icon stat-icon-visibility" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                                    <circle cx="12" cy="12" r="2.5"></circle>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">Visibility</span>
+                                <strong class="stat-value" id="visibilityValue">—</strong>
+                                <span class="stat-subtext" id="visibilitySubtext">Horizontal range</span>
+                            </div>
+                        </article>
+
+                        <article class="stat-card glass-card" data-stat="uv">
+                            <div class="stat-icon stat-icon-uv" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="3.5"></circle>
+                                    <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">UV Index</span>
+                                <strong class="stat-value" id="uvValue">—</strong>
+                                <span class="stat-subtext" id="uvSubtext">Solar intensity</span>
+                            </div>
+                        </article>
+
+                        <article class="stat-card glass-card" data-stat="cloud">
+                            <div class="stat-icon stat-icon-cloud" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7.5 18h9.7a4.3 4.3 0 0 0 .4-8.6A6 6 0 0 0 6 10.8 3.6 3.6 0 0 0 7.5 18Z"></path>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">Cloud Cover</span>
+                                <strong class="stat-value" id="cloudValue">—</strong>
+                                <span class="stat-subtext" id="cloudSubtext">Sky coverage</span>
+                            </div>
+                        </article>
+
+                        <article class="stat-card glass-card" data-stat="dew">
+                            <div class="stat-icon stat-icon-dew" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 3s5.5 6.2 5.5 10.5a5.5 5.5 0 0 1-11 0C6.5 9.2 12 3 12 3Z"></path>
+                                    <path d="M9.5 14.5a2.6 2.6 0 0 0 2.6 2.6"></path>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">Dew Point</span>
+                                <strong class="stat-value" id="dewPointValue">—</strong>
+                                <span class="stat-subtext" id="dewPointSubtext">Comfort indicator</span>
+                            </div>
+                        </article>
+
+                        <article class="stat-card glass-card" data-stat="rain">
+                            <div class="stat-icon stat-icon-rain" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7.5 14h9.7a4.3 4.3 0 0 0 .4-8.6A6 6 0 0 0 6 6.8 3.6 3.6 0 0 0 7.5 14Z"></path>
+                                    <path d="m9 17-1 3M13 17l-1 3M17 17l-1 3"></path>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">Rain Chance</span>
+                                <strong class="stat-value" id="rainValue">—</strong>
+                                <span class="stat-subtext" id="rainSubtext">Next-hour probability</span>
+                            </div>
+                        </article>
+
+                        <article class="stat-card stat-card-wide glass-card" data-stat="sunrise">
+                            <div class="stat-icon stat-icon-sunrise" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M4 18h16"></path>
+                                    <path d="M7 15a5 5 0 0 1 10 0"></path>
+                                    <path d="M12 3v3M5.6 5.6l2.1 2.1M18.4 5.6l-2.1 2.1"></path>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">Sunrise</span>
+                                <strong class="stat-value" id="sunriseValue">—</strong>
+                                <span class="stat-subtext" id="sunriseSubtext">Local time</span>
+                            </div>
+                        </article>
+
+                        <article class="stat-card stat-card-wide glass-card" data-stat="sunset">
+                            <div class="stat-icon stat-icon-sunset" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M4 18h16"></path>
+                                    <path d="M7 15a5 5 0 0 1 10 0"></path>
+                                    <path d="M12 3v3M5.6 5.6l2.1 2.1M18.4 5.6l-2.1 2.1"></path>
+                                </svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">Sunset</span>
+                                <strong class="stat-value" id="sunsetValue">—</strong>
+                                <span class="stat-subtext" id="sunsetSubtext">Local time</span>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- =============================================
+                     Hourly Forecast
+                     ============================================= -->
+                <section class="forecast-section" aria-labelledby="hourlyTitle">
+                    <div class="section-title-row">
+                        <div>
+                            <p class="eyebrow">NEXT 24 HOURS</p>
+                            <h2 id="hourlyTitle">Hourly Forecast</h2>
+                        </div>
+                        <div class="forecast-scroll-hint" aria-hidden="true">
+                            <span>Scroll</span>
+                            <svg viewBox="0 0 24 24">
+                                <path d="M5 12h14M13 6l6 6-6 6"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="hourly-forecast-shell">
+                        <button
+                            class="forecast-nav forecast-nav-prev"
+                            id="hourlyPrevButton"
+                            type="button"
+                            aria-label="Scroll hourly forecast left"
+                        >
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="m15 18-6-6 6-6"></path>
+                            </svg>
+                        </button>
+
+                        <div
+                            class="hourly-forecast"
+                            id="hourlyForecast"
+                            tabindex="0"
+                            aria-label="24 hour weather forecast"
+                        ></div>
+
+                        <button
+                            class="forecast-nav forecast-nav-next"
+                            id="hourlyNextButton"
+                            type="button"
+                            aria-label="Scroll hourly forecast right"
+                        >
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="m9 18 6-6-6-6"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- =============================================
+                     7 Day Forecast
+                     ============================================= -->
+                <section class="forecast-section daily-section" aria-labelledby="dailyTitle">
+                    <div class="section-title-row">
+                        <div>
+                            <p class="eyebrow">LOOKING AHEAD</p>
+                            <h2 id="dailyTitle">7 Day Forecast</h2>
+                        </div>
+                    </div>
+
+                    <div class="daily-forecast" id="dailyForecast"></div>
+                </section>
+
+                <!-- =============================================
+                     Temperature Chart
+                     ============================================= -->
+                <section class="chart-section" aria-labelledby="chartTitle">
+                    <div class="section-title-row">
+                        <div>
+                            <p class="eyebrow">TEMPERATURE TREND</p>
+                            <h2 id="chartTitle">Temperature Chart</h2>
+                        </div>
+                        <div class="chart-legend" aria-label="Chart legend">
+                            <span class="legend-item">
+                                <span class="legend-dot legend-high"></span>
+                                High
+                            </span>
+                            <span class="legend-item">
+                                <span class="legend-dot legend-low"></span>
+                                Low
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="chart-card glass-card">
+                        <div class="chart-toolbar">
+                            <div class="chart-location" id="chartLocation">—</div>
+                            <div class="chart-period">
+                                <span class="active">7 Days</span>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="temperatureChart" aria-label="Seven day temperature chart"></canvas>
+                            <div class="chart-empty" id="chartEmpty" hidden>
+                                Temperature data will appear here.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+
+        <!-- =====================================================
+             Footer
+             ===================================================== -->
+        <footer class="footer" id="footer">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <span class="footer-logo" aria-hidden="true">
+                        <span class="footer-sun"></span>
+                        <span class="footer-cloud"></span>
+                    </span>
+                    <div>
+                        <strong>WeatherPro</strong>
+                        <span>Live weather, beautifully presented.</span>
+                    </div>
+                </div>
+
+                <div class="footer-meta">
+                    <span>Weather data by Open-Meteo</span>
+                
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- =========================================================
+         Accessible Toast / Status Region
+         ========================================================= -->
+    <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- =========================================================
+         Loading Overlay for Weather Refreshes
+         ========================================================= -->
+    <div class="weather-loading-overlay" id="weatherLoadingOverlay" hidden aria-live="polite">
+        <div class="weather-loading-card">
+            <div class="loading-spinner loading-spinner-small" aria-hidden="true"></div>
+            <span id="weatherLoadingText">Updating weather…</span>
+        </div>
+    </div>
+
+    <!-- Application script -->
+    <script src="script.js" defer></script>
+</body>
+</html>
