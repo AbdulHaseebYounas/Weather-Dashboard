@@ -85,15 +85,19 @@ This project was built to strengthen frontend development skills by applying rea
 ---
 # 📸 Screenshots
 
-## ☀️ Light Mode
+## Light Mode
 
-![Light Mode](UI%20Images/1.png)
-![Light Mode](UI%20Images/2.png)
-![Light Mode](UI%20Images/3.png)
-## 🌙 Dark Mode
+![Light Mode](UIimages/1.png)
 
-![Dark Mode](UI%20Images/4.png)
-![Dark Mode](UI%20Images/5.png)
+![Light Mode](UIimages/2.png)
+
+![Light Mode](UIimages/3.png)
+
+## Dark Mode
+
+![Dark Mode](UIimages/4.png)
+
+![Dark Mode](UIimages/5.png)
 
 ---
 # Author
