@@ -83,7 +83,19 @@ This project was built to strengthen frontend development skills by applying rea
 | Local Storage | Geolocation API | Current Location Weather |
 
 ---
+# 📸 Screenshots
 
+## ☀️ Light Mode
+
+![Light Mode](UI%20Images/1.png)
+![Light Mode](UI%20Images/2.png)
+![Light Mode](UI%20Images/3.png)
+## 🌙 Dark Mode
+
+![Dark Mode](UI%20Images/4.png)
+![Dark Mode](UI%20Images/5.png)
+
+---
 # Author
 
 **Abdul Haseeb Younas**
